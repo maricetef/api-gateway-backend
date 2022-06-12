@@ -1,0 +1,9 @@
+POST  http://localhost:5000/api/gateways/
+Content-Type: application/json
+
+{
+  "numSerie":2245778789,
+  "nombre": "gateway 1",
+  "dirIPv4": "123.34.34.34",
+  //Device : {type: Device}
+}

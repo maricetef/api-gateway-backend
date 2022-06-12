@@ -1,0 +1,9 @@
+POST   http://localhost:5000/api/devices/
+Content-Type: application/json
+
+{
+  "UID": 3,
+  "proveedor": "probando",
+  "estado": "conectado"
+  
+}
