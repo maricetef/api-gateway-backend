@@ -2,8 +2,10 @@ POST   http://localhost:5000/api/devices/
 Content-Type: application/json
 
 {
-  "UID": 3,
+  "UID": 6,
   "proveedor": "probando",
-  "estado": "conectado"
+  "estado": true,
+  "gatewayID": "62aca4d5789c48b1161ae2ea"
+  
   
 }

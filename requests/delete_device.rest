@@ -1,1 +1,1 @@
-DELETE  http://localhost:5000/api/gateways/1
+DELETE  http://localhost:5000/api/devices/62a4e58c6de6fcb29e446957

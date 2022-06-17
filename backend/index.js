@@ -19,8 +19,8 @@ server.use(express.json());//permite q todo se formate a json
 
 
 //Routes
-server.use("/api/gateways", require("./services/service-gateway.js"));
-server.use("/api/devices", require("./services/service-device.js"));
+server.use("/api/gateways", require("./controllers/gateways.js"));
+server.use("/api/devices", require("./controllers/devices.js"));
 
 //View
 server.use(express.static(path.join(__dirname,"public")));//Obtener la ruta de la carpeta public
@@ -31,5 +31,5 @@ server.use((req,resp)=>{
 
 //Star server
 server.listen(server.get("port"),()=>{
-  console.log(`Serviodr correindo en ${server.get("port")}` );
+  console.log(`Servidor corriendo en ${server.get("port")}` );
 });

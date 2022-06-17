@@ -1,6 +1,6 @@
-const express = require("express");
-const router = express();    
-const Device = require("../models/model-device.js");
+const router = require("express").Router();   
+const Device = require("../models/Device.js");
+const Gateway = require("../models/Gateway.js");
 
 
 //Obtener todas los device
@@ -33,16 +33,34 @@ router.get("/:id", (req, resp, next) => {
 });
 
 //Guardar device en base de datos
-router.post("/", (req, res,next) => {
-  const data = req.body;
-  const devices = new Device(data);
-  devices.save().the(actDevices => {
-    res.json(actDevices);
-  }).catch(error =>  next(error));
+router.post("/",async (req, res, next) => {
+  const {body} = req;
+  const { UID, proveedor,estado=false,gatewayID } = body;
+ 
+  const gateway = await Gateway.findById(gatewayID);
+  const devices = new Device({
+    UID, 
+    proveedor,
+    fechaCreacion:new Date(),
+    estado,
+    gateway:gateway._id
+  });
+ 
+  try{
+    const saveDevice= await devices.save();
+    
+    gateway.devices = gateway.devices.concat(saveDevice._id);
+    await gateway.save();
+   
+    res.json(saveDevice);
+  }catch(error){
+    next(error);
+  }
+  
 });
 
 
-//Actualizar device, el new: true lo que devuelve es el objeto actualizado, sino se pone devuelve el objeto antes de actualizarlo
+//Actualizar device, el new: true lo que devuelve es el objeto actualizado, sino se pone, devuelve el objeto antes de actualizarlo
 router.put("/:id", (req, res, next) => {
   
   const actDevice = req.body;
@@ -53,10 +71,10 @@ router.put("/:id", (req, res, next) => {
 
 //Eliminar device
 
-router.delete("/:id",(req, res,next) => {
-  //const data= req.body;
-
-  Device.findByIdAndRemove(req.params.id).the(() => {
+router.delete("/:id",async (req, res,next) => {
+  const id= req.params.id;
+  
+  await Device.findByIdAndRemove(id).then(() => {
     res.status(204).end();
   }).catch(error =>  next(error));
     
